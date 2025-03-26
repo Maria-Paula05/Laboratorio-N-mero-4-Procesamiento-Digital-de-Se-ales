@@ -6,11 +6,11 @@ Una prueba EMG analiza las señales eléctricas que emiten los músculos cuando 
 
 A continuación, se describirá el proceso llevado a cabo para cumplir ocn el objetivo de la práctica:
 
-# 1.Instalación de programas
+# 1.Instalación de programas:
 
-# 2.Configuración del DAQ
+# 2.Configuración del DAQ:
 
- # 3.Conexiones del circuito
+# 3 ¡
 
 # 4.Adquisición de la señal EMG
 Librerias utilizadas
