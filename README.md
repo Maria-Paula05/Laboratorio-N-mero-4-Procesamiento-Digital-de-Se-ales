@@ -169,15 +169,15 @@ for i in range(len(fft_magnitudes)):
 for i in range(min(5, len(freq_mean_values))):
     print(f"Ventana {i+1}: Frecuencia Media = {freq_mean_values[i]:.2f} Hz, Frecuencia Mediana = {freq_median_values[i]:.2f} Hz")
 ```
-Ventana 1: Frecuencia Media = 39.63 Hz, Frecuencia Mediana = 39.19 Hz
+-Ventana 1: Frecuencia Media = 39.63 Hz, Frecuencia Mediana = 39.19 Hz
 
-Ventana 2: Frecuencia Media = 37.75 Hz, Frecuencia Mediana = 36.18 Hz
+-Ventana 2: Frecuencia Media = 37.75 Hz, Frecuencia Mediana = 36.18 Hz
 
-Ventana 3: Frecuencia Media = 40.72 Hz, Frecuencia Mediana = 42.20 Hz
+-Ventana 3: Frecuencia Media = 40.72 Hz, Frecuencia Mediana = 42.20 Hz
 
-Ventana 4: Frecuencia Media = 37.82 Hz, Frecuencia Mediana = 37.18 Hz
+-Ventana 4: Frecuencia Media = 37.82 Hz, Frecuencia Mediana = 37.18 Hz
 
-Ventana 5: Frecuencia Media = 41.24 Hz, Frecuencia Mediana = 44.21 Hz
+-Ventana 5: Frecuencia Media = 41.24 Hz, Frecuencia Mediana = 44.21 Hz
 
 En el estudio de EMG estos calculos estadísticos son usados para:
 
@@ -185,3 +185,8 @@ Frecuencia Media: Se usa para analizar la fatiga muscular. Si disminuye con el t
 
 Frecuencia Mediana: También se usa en fatiga y en la caracterización de diferentes tipos de actividad muscular.
 
+# 9
+# Conclusiones
+# Referencias
+Electromiografía y estudios de conducción nerviosa. (n.d.). Medlineplus.gov. Retrieved March 26, 2025, from https://medlineplus.gov/spanish/pruebas-de-laboratorio/electromiografia-y-estudios-de-conduccion-nerviosa/
+Entender la ventana de Hanning: una guía práctica para principiantes. (n.d.). Wray Castle. Retrieved March 26, 2025, from https://wraycastle.com/es/blogs/knowledge-base/hanning-window?srsltid=AfmBOoorDAgr8KgZZHGfSGRgx7zQtEtQnPjF
