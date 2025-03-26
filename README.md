@@ -6,7 +6,8 @@ Una prueba EMG analiza las señales eléctricas que emiten los músculos cuando 
 
 A continuación, se describirá el proceso llevado a cabo para cumplir con el objetivo de la práctica:
 # 1.Músculo medido:
-![image](https://github.com/user-attachments/assets/1b26a2f7-f252-4424-933f-6e6672c64e22)
+<img src="https://github.com/user-attachments/assets/1b26a2f7-f252-4424-933f-6e6672c64e22" width="300">
+
 
 El músculo escogido para la práctica fue el extensor de los dedos,los tres electrodos fueron ubicados como se puede observar en la imagen.
 # 2.Configuración del DAQ:
