@@ -1,5 +1,9 @@
 # Laboratorio-Número-4-Procesamiento-Digital-de-Señales
 
+La electromiografía (EMG) y los estudios de conducción nerviosa son pruebas que verifican qué tan bien están funcionando los músculos y los nervios que los controlan. Estos nervios controlan los músculos enviando señales eléctricas para que se muevan. A medida que los músculos reaccionan contrayéndose, emiten señales eléctricas, que luego se pueden medir.
+
+Una prueba EMG analiza las señales eléctricas que emiten los músculos cuando están en reposo y cuando se usan.En esta práctica de laboratorio se tuvó como objetivo: aplicar el filtrado de señales continuas para procesar una señal electromigráfica y detectar la fatiga muscular a través del análisis espectral de la misma. 
+
 # 1.Instalación de programas
 
 # 2.Configuración del DAQ
@@ -69,19 +73,20 @@ plt.grid(True)
 plt.show()
 ```
 ![image](https://github.com/user-attachments/assets/a0442f04-8bab-4597-a135-649b880e84e1)
-Los filtros que se aplicaroon a la señal de EMG fueron los siguientes:
-1.Filtro pasa altas
+
+Los filtros que se aplicaron a la señal de EMG fueron los siguientes:
+-Filtro pasa altas:
+
 El filtro pasa altas elimina frecuencias bajas , dejando pasar solo las altas.En una señal EMG, ayuda a eliminar el ruido de baja frecuencia como el movimiento de la línea base o interferencias musculares de baja frecuencia.
--La frecuencia de corte ( 20 Hz):
-Cualquier frecuencia por debajo de 20 Hz será atenuada.
-Elimina ruido de baja frecuencia, como el movimiento de los electrodos o artefactos biomecánicos.
--Filtro Butterworth de orden 4:
-Se usa porque proporciona una transición suave sin distorsionar demasiado la señal.
-2.Filtro pasa bajas
+
+La frecuencia de corte ( 20 Hz):Cualquier frecuencia por debajo de 20 Hz será atenuada,elimina ruido de baja frecuencia, como el movimiento de los electrodos o artefactos biomecánicos.
+
+-Filtro pasa bajas
 Este filtro elimina las frecuencias altas, dejando pasar solo las bajas. En EMG, ayuda a eliminar el ruido electromagnético y la interferencia de alta frecuencia (como es el ruido de 50-60 Hz de la corriente eléctrica).
--La frecuencia de corte ( 60 Hz):
-El filtro deja pasar frecuencias entre 0 Hz y aproximadamente 60 Hz, con una ligera atenuación cerca del punto de corte.
+
+-La frecuencia de corte ( 60 Hz):El filtro deja pasar frecuencias entre 0 Hz y aproximadamente 60 Hz, con una ligera atenuación cerca del punto de corte.
 # 6.Aventanamiento
+
 La ventana de Hanning es una función matemática utilizada principalmente en el procesamiento de señales para suavizar los bordes de una señal,es un tipo de función de ventana que aplica una superposición ponderada a un segmento de datos, lo que ayuda a minimizar las discontinuidades abruptas en sus límites. Este efecto de suavizado es crucial en el análisis de señales, ya que reduce la fuga espectral (artefactos no deseados que pueden distorsionar el análisis).
 En este caso se grafican hasta 5 ventanas para visualizar cómo se segmenta la señal y cada curva representa un fragmento de la señal original pero suavizada por la ventana de Hamming.
 ```python
@@ -114,6 +119,7 @@ Mejor análisis en el dominio de la frecuencia (reduce el ruido espectral).
 
 Evita bordes bruscos que podrían introducir artefactos en la señal.
 # 7.Análisis espectral
+
 En este fragmento de código  se aplica la Transformada Rápida de Fourier (FFT) a las ventanas de la señal EMG y grafica su espectro de frecuencia. 
 ```python
 # Aplicar Transformada de Fourier (FFT) a cada ventana
@@ -172,6 +178,8 @@ Ventana 4: Frecuencia Media = 37.82 Hz, Frecuencia Mediana = 37.18 Hz
 Ventana 5: Frecuencia Media = 41.24 Hz, Frecuencia Mediana = 44.21 Hz
 
 En el estudio de EMG estos calculos estadísticos son usados para:
+
 Frecuencia Media: Se usa para analizar la fatiga muscular. Si disminuye con el tiempo, indica fatiga.
+
 Frecuencia Mediana: También se usa en fatiga y en la caracterización de diferentes tipos de actividad muscular.
 
