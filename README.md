@@ -31,6 +31,9 @@ plt.show()
 
 print(f"Frecuencia de muestreo estimada: {fs_mean:.2f} Hz")
 ```
+![image](https://github.com/user-attachments/assets/362fba82-22e5-4f46-869a-8c635d2db889)
+Frecuencia de muestreo estimada: 124.60 Hz
+# Filtrado de la señal
 ```python
 # Función para diseñar y aplicar un filtro Butterworth
 def butterworth_filter(data, cutoff, fs, filter_type, order=4):
@@ -56,6 +59,8 @@ plt.legend()
 plt.grid(True)
 plt.show()
 ```
+![image](https://github.com/user-attachments/assets/a0442f04-8bab-4597-a135-649b880e84e1)
+# Aventanamiento
 ```python
 # Definir tamaño de ventana en segundos
 window_size = 1  # 1 segundo por ventana
@@ -79,6 +84,8 @@ plt.legend()
 plt.grid(True)
 plt.show()
 ```
+![image](https://github.com/user-attachments/assets/a1685bef-0dad-4ad2-bf1c-a76048c179ad)
+# Análisis espectral
 ```python
 # Aplicar Transformada de Fourier (FFT) a cada ventana
 fft_results = [np.fft.fft(w) for w in windowed_signals]
@@ -100,3 +107,5 @@ plt.legend()
 plt.grid(True)
 plt.show()
 ```
+![image](https://github.com/user-attachments/assets/dff544d8-b993-46be-af1a-0737d43af0b1)
+
