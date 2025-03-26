@@ -4,6 +4,8 @@ La electromiografía (EMG) y los estudios de conducción nerviosa son pruebas qu
 
 Una prueba EMG analiza las señales eléctricas que emiten los músculos cuando están en reposo y cuando se usan.En esta práctica de laboratorio se tuvó como objetivo: aplicar el filtrado de señales continuas para procesar una señal electromigráfica y detectar la fatiga muscular a través del análisis espectral de la misma. 
 
+A continuación, se describirá el proceso llevado a cabo para cumplir ocn el objetivo de la práctica:
+
 # 1.Instalación de programas
 
 # 2.Configuración del DAQ
