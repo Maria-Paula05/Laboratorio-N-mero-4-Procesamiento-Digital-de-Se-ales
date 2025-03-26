@@ -1,4 +1,4 @@
-# Laboratorio-N-mero-4-Procesamiento-Digital-de-Se-ales
+# Laboratorio-Número-4-Procesamiento-Digital-de-Señales
 Librerias utilizadas
 ```python
 import pandas as pd
