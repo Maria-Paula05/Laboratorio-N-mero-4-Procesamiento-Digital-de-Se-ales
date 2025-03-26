@@ -12,10 +12,10 @@ A continuación, se describirá el proceso llevado a cabo para cumplir con el ob
 El músculo escogido para la práctica fue el extensor de los dedos,los tres electrodos fueron ubicados como se puede observar en la imagen.
 # 2.Configuración del DAQ:
 En el presente laboratorio se utilizó un módulo DAQ el cual se encarga de :La adquisición de datos y es el proceso de medir un fenómeno eléctrico o físico como voltaje, corriente, temperatura, presión o sonido. Un sistema DAQ consiste de sensores, hardware de medidas DAQ y una PC con software programable.
-Para que este sistema de adquisición de datos funcionará se instaló una librería propia de DAQ en Matlab para captar la señal en tiempo real.
+# 3.Adquisición de la señal EMG
+Para que este sistema de adquisición de datos(DAQ) funcionará se instaló una librería propia de DAQ en Matlab para captar la señal en tiempo real.
 
 
-# 4.Adquisición de la señal EMG
 Librerias utilizadas
 ```python
 import pandas as pd
