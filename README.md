@@ -4,13 +4,14 @@ La electromiografía (EMG) y los estudios de conducción nerviosa son pruebas qu
 
 Una prueba EMG analiza las señales eléctricas que emiten los músculos cuando están en reposo y cuando se usan.En esta práctica de laboratorio se tuvó como objetivo: aplicar el filtrado de señales continuas para procesar una señal electromigráfica y detectar la fatiga muscular a través del análisis espectral de la misma. 
 
-A continuación, se describirá el proceso llevado a cabo para cumplir ocn el objetivo de la práctica:
-
-# 1.Instalación de programas:
-
+A continuación, se describirá el proceso llevado a cabo para cumplir con el objetivo de la práctica:
+# 1.Músculo medido:
+![image](https://github.com/user-attachments/assets/1b26a2f7-f252-4424-933f-6e6672c64e22)
+eL músculo escogido para la práctica fue el extensor de los dedos,los tres electrodos fueron ubicados como se puede observar en la imagen.
 # 2.Configuración del DAQ:
+En el presente laboratorio se utilizó un módulo DAQ el cual se encarga de :La adquisición de datos y es el proceso de medir un fenómeno eléctrico o físico como voltaje, corriente, temperatura, presión o sonido. Un sistema DAQ consiste de sensores, hardware de medidas DAQ y una PC con software programable.
+Para que este sistema de adquisición de datos funcionará se instaló una librería propia de DAQ en Matlab para captar la señal en tiempo real.
 
-# 3 ¡
 
 # 4.Adquisición de la señal EMG
 Librerias utilizadas
