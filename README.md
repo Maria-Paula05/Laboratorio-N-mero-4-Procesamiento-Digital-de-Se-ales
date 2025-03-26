@@ -189,4 +189,5 @@ Frecuencia Mediana: También se usa en fatiga y en la caracterización de difere
 # Conclusiones
 # Referencias
 Electromiografía y estudios de conducción nerviosa. (n.d.). Medlineplus.gov. Retrieved March 26, 2025, from https://medlineplus.gov/spanish/pruebas-de-laboratorio/electromiografia-y-estudios-de-conduccion-nerviosa/
+
 Entender la ventana de Hanning: una guía práctica para principiantes. (n.d.). Wray Castle. Retrieved March 26, 2025, from https://wraycastle.com/es/blogs/knowledge-base/hanning-window?srsltid=AfmBOoorDAgr8KgZZHGfSGRgx7zQtEtQnPjF
