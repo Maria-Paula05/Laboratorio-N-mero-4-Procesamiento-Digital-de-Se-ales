@@ -109,8 +109,9 @@ plt.show()
 ```
 ![image](https://github.com/user-attachments/assets/a1685bef-0dad-4ad2-bf1c-a76048c179ad)
 Los beneficios de usar aventamiento en este caso son: 
-✔ Mejor análisis en el dominio de la frecuencia (reduce el ruido espectral).
-✔ Evita bordes bruscos que podrían introducir artefactos en la señal.
+Mejor análisis en el dominio de la frecuencia (reduce el ruido espectral).
+
+Evita bordes bruscos que podrían introducir artefactos en la señal.
 # Análisis espectral
 En este fragmento de código  se aplica la Transformada Rápida de Fourier (FFT) a las ventanas de la señal EMG y grafica su espectro de frecuencia. 
 ```python
