@@ -50,6 +50,12 @@ print(f"Frecuencia de muestreo estimada: {fs_mean:.2f} Hz")
 ```
 ![image](https://github.com/user-attachments/assets/362fba82-22e5-4f46-869a-8c635d2db889)
 Frecuencia de muestreo estimada: 124.60 Hz
+
+Se puede analizar de esta señal lo siguiente:
+Se observa una señal con bastante variabilidad.
+Parece haber interferencias de alta frecuencia (picos muy rápidos).
+La amplitud disminuye con el tiempo, lo cual podría indicar fatiga muscular.
+
 -Según el artículo "Extracción de 400ms de la señal EMG", publicado en ResearchGate, las señales EMG presentan una amplitud de naturaleza aleatoria que varía en el rango de [0-10] mV, con una energía útil en el rango de frecuencias de 20 a 500 Hz. De acuerdo con este artículo se definieron las frecuencias de corte de los filtros pasa altas y pasa bajas aplicados a continuación.
 # 5.Filtrado de la señal
 ```python
