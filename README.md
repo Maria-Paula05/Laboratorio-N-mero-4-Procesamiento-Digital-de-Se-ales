@@ -305,7 +305,7 @@ else:
 ````
 P-value (Frecuencia Media, bilateral): 0.99433
 
-P-value (Magnitud Total, bilateral): 0.00000
+P-value (Magnitud Total, bilateral): 0.000001
 
 No hay suficiente evidencia para afirmar que la frecuencia media es diferente.
 
@@ -313,6 +313,19 @@ La diferencia en la magnitud total es estadísticamente significativa (p < 0.05)
 
 # 8 Analisis de resultados  
 
+-Se puede analizar de la señal original lo siguiente:se observa una señal con bastante variabilidad lo cual es normal porque las señales electromiográficas son variables y cambientes durante la contracción y relajación del músculo;también en la señal parece haber interferencias de alta frecuencia (picos muy rápidos),esta característica se da por las contracciones repetitivas que se realizaron sin descanso del músculo, y por último que la amplitud disminuye con el tiempo, lo cual podría indicar fatiga muscular.
+
+-También se pueden observar os beneficios de usar aventamiento en este caso y son que se obtiene un mejor análisis en el dominio de la frecuencia (reduce el ruido espectral y evita bordes bruscos que podrían introducir artefactos en la señal.
+
+- En cuanto a la Transformada rápida de Fourier,esta herramienta matemática permite analizar la distribución de energía en diferentes frecuencias,ayuda a identificar ruidos no deseados (como interferencia eléctrica en 50-60 Hz),y es útil para extraer características de la señal, como la frecuencia media o la frecuencia mediana en estudios de fatiga muscular.
+  
+- El análisis espectral de una señal electromiográfica (EMG) es una herramienta clave en la evaluación de la fatiga muscular. Se sabe que a medida que un músculo se fatiga, la distribución de energía en su espectro de frecuencia cambia debido a la disminución de la conducción de la fibra muscular y la acumulación de metabolitos que afectan la excitabilidad de la membrana. Un indicador comúnmente utilizado para evaluar este proceso es la frecuencia mediana del espectro de potencia, la cual suele disminuir cuando el músculo experimenta fatiga prolongada.
+
+- Al dividir la señal en ventanas temporales y analizar su contenido espectral, se observó que la energía se redistribuye en diferentes frecuencias a medida que avanza el tiempo. Esto es un comportamiento esperable, ya que la activación muscular no es estática y puede verse influenciada por variaciones en la fuerza aplicada, el reclutamiento de unidades motoras y la adaptación neuromuscular. Sin embargo, los cambios no siguen un patrón claro de desplazamiento hacia frecuencias más bajas, lo cual suele ser característico de la fatiga muscular.
+
+- En un músculo fatigado, la disminución de la velocidad de conducción de las fibras musculares provoca que las señales EMG se desplacen hacia el rango de frecuencias más bajas. En este análisis, sin embargo, la evolución de la frecuencia mediana no mostró una disminución progresiva. Por el contrario, hacia el final del registro se observó un incremento en la frecuencia mediana.
+
+-Para determinar si la reducción en la frecuencia mediana es estadísticamente significativa, se aplicó una prueba de Wilcoxon comparando las primeras cinco ventanas con las últimas cinco. El resultado obtenido (𝑝 = 0.197) indica que no existe evidencia suficiente para afirmar que la frecuencia mediana haya disminuido de manera significativa. Este resultado implica que no se puede concluir que haya una tendencia clara de fatiga en la señal analizada. No obstante, esto no significa necesariamente que el músculo no esté fatigado, sino que los cambios en la señal EMG podrían no haber sido lo suficientemente pronunciados o podrían estar enmascarados por otros factores.
 
 # Conclusiones
 
