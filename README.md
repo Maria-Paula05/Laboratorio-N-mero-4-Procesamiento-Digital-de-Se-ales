@@ -1,4 +1,4 @@
-# Laboratorio-Número-4-Procesamiento-Digital-de-Señales
+# Laboratorio 4 - Procesamiento Digital de Señales
 
 La electromiografía (EMG) y los estudios de conducción nerviosa son pruebas que verifican qué tan bien están funcionando los músculos y los nervios que los controlan. Estos nervios controlan los músculos enviando señales eléctricas para que se muevan. A medida que los músculos reaccionan contrayéndose, emiten señales eléctricas, que luego se pueden medir.
 
