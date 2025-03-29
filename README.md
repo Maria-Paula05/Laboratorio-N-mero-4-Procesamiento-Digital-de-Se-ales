@@ -10,10 +10,13 @@ A continuación, se describirá el proceso llevado a cabo para cumplir con el ob
 
 
 El músculo escogido para la práctica fue el extensor de los dedos,los tres electrodos fueron ubicados como se puede observar en la imagen.
+
 # 2.Configuración del DAQ:
-En el presente laboratorio se utilizó un módulo DAQ el cual se encarga de :La adquisición de datos y es el proceso de medir un fenómeno eléctrico o físico como voltaje, corriente, temperatura, presión o sonido. Un sistema DAQ consiste de sensores, hardware de medidas DAQ y una PC con software programable.
+En el presente laboratorio se utilizó un módulo DAQ el cual se encarga de :La adquisición de datos y es el proceso de medir un fenómeno eléctrico o físico como voltaje, corriente, temperatura, presión o sonido. Un sistema DAQ consiste de sensores, hardware de medidas DAQ y una PC con software programable.En este caso se utilizó para realizar adquisición de datos de una señal electromiográfica usando  un sensor de señal muscular.
+
 # 3.Adquisición de la señal EMG
-Para que este sistema de adquisición de datos(DAQ) funcionará se instaló una librería propia de DAQ en Matlab para captar la señal en tiempo real.
+Para que este sistema de adquisición de datos(DAQ) funcionará se instaló una librería propia de DAQ en Matlab para captar la señal en tiempo real, con ayuda delsensor descrito y conexiones simples.
+
 ```python
 % ======= CONFIGURACIÓN =======
 device = 'Dev1';     % Nombre del DAQ
@@ -58,14 +61,24 @@ while seconds(datetime('now') - startTime) < duration
     set(h, 'XData', timeVec, 'YData', signalVec);
     drawn
 ```
-Y en cuanto a graficar la señal se utilizaron las siguientes librerias:
+En este código, se definió:
+
+Frecuencia de muestreo(samplerate):1000; este valor quiere decir que se toman 1000 muestras por segundo.
+
+Tiempo de muestreo(duration):240 s lo que equivale a 4 minutos.
+
+En cuanto a el procesamiento de la señal tomada se utilizaron las siguientes librerias:
+
 ```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import butter, filtfilt
+from scipy.fftpack import fft
+import scipy.stats as stats
 ```
 Para graficar la señal de EMG tomada se usó el siguiente código:
+
 ```python
 # Cargar la señal EMG desde un archivo CSV
 file_path = "emg_signal.csv"  # Asegúrate de que el archivo esté en el mismo directorio
@@ -92,15 +105,16 @@ plt.show()
 print(f"Frecuencia de muestreo estimada: {fs_mean:.2f} Hz")
 ```
 ![image](https://github.com/user-attachments/assets/362fba82-22e5-4f46-869a-8c635d2db889)
+
 Frecuencia de muestreo estimada: 124.60 Hz
 
-Se puede analizar de esta señal lo siguiente:
-Se observa una señal con bastante variabilidad.
-Parece haber interferencias de alta frecuencia (picos muy rápidos).
-La amplitud disminuye con el tiempo, lo cual podría indicar fatiga muscular.
+# 4.Filtrado de la señal
+A continuación, algunos calculos realizados para obtener filtros como se requieren:
+Frecuencia de Nyquist:
+![image](https://github.com/user-attachments/assets/cee2e0ab-9972-4ecb-8d36-f4cfc03aec98)
+Frecuencias de corte normalizadas por Nyquist:
+![image](https://github.com/user-attachments/assets/72ea20a0-a297-4674-a220-280e4382df26)
 
-
-# 5.Filtrado de la señal
 ```python
 # Función para diseñar y aplicar un filtro Butterworth
 def butterworth_filter(data, cutoff, fs, filter_type, order=4):
@@ -140,12 +154,12 @@ Este filtro elimina las frecuencias altas, dejando pasar solo las bajas. En EMG,
 
 -La frecuencia de corte ( 60 Hz):El filtro deja pasar frecuencias entre 0 Hz y aproximadamente 60 Hz, con una ligera atenuación cerca del punto de corte.
 
--Según el artículo "Extracción de 400ms de la señal EMG", publicado en ResearchGate, las señales EMG presentan una amplitud de naturaleza aleatoria que varía en el rango de [0-10] mV, con una energía útil en el rango de frecuencias de 20 a 500 Hz. De acuerdo con este artículo se definieron las frecuencias de corte de los filtros pasa altas y pasa bajas aplicados a continuación.
+-Según el artículo "Extracción de 400ms de la señal EMG", publicado en ResearchGate, las señales EMG presentan una amplitud de naturaleza aleatoria que varía en el rango de [0-10] mV, con una energía útil en el rango de frecuencias de 20 a 500 Hz. De acuerdo con este artículo se definió las frecuencias de corte del filtros pasa altas.
 
-# 6.Aventanamiento
+# 5.Aventanamiento
 
 La ventana de Hanning es una función matemática utilizada principalmente en el procesamiento de señales para suavizar los bordes de una señal,es un tipo de función de ventana que aplica una superposición ponderada a un segmento de datos, lo que ayuda a minimizar las discontinuidades abruptas en sus límites. Este efecto de suavizado es crucial en el análisis de señales, ya que reduce la fuga espectral (artefactos no deseados que pueden distorsionar el análisis).
-En este caso se grafican tres ventanas: de la primera contracción , la del medio y la última contracción muscular.
+En este caso se grafican tres ventanas: de la primera , la del medio y la última contracción muscular.
 
 ```python
 # Definir tamaño de ventana en segundos
@@ -197,14 +211,10 @@ axes[2].legend()
 plt.tight_layout()
 plt.show()
 ```
+
 ![image](https://github.com/user-attachments/assets/59e156d9-2264-4653-829d-1678936114a9)
 
-Los beneficios de usar aventamiento en este caso son: 
-
-Mejor análisis en el dominio de la frecuencia (reduce el ruido espectral).
-
-Evita bordes bruscos que podrían introducir artefactos en la señal.
-# 7.Análisis espectral
+# 6.Análisis espectral
 
 En este fragmento de código  se aplica la Transformada Rápida de Fourier (FFT) a las ventanas de la señal EMG y grafica su espectro de frecuencia. 
 ```python
@@ -235,7 +245,7 @@ print(f"Primera Ventana: Frecuencia Media: {freq_mean_first:.2f} Hz, Magnitud To
 print(f"Ventana del Medio: Frecuencia Media: {freq_mean_middle:.2f} Hz, Magnitud Total: {magnitude_middle:.2f}")
 print(f"Última Ventana: Frecuencia Media: {freq_mean_last:.2f} Hz, Magnitud Total: {magnitude_last:.2f}")
 
-# Graficar espectros de frecuencia en un solo gráfico (sin incluir datos en la leyenda)
+# Graficar espectros de frecuencia
 plt.figure(figsize=(12, 5))
 plt.plot(freqs_first, fft_first, color='r', label="Primera Ventana")
 plt.plot(freqs_middle, fft_middle, color='g', label="Ventana del Medio")
@@ -251,8 +261,8 @@ plt.show()
 Primera Ventana: Frecuencia Media: 38.70 Hz, Magnitud Total: 523.64
 Ventana del Medio: Frecuencia Media: 39.45 Hz, Magnitud Total: 471.80
 Última Ventana: Frecuencia Media: 40.38 Hz, Magnitud Total: 142.05
-La FFT permite analizar la distribución de energía en diferentes frecuencias,ayuda a identificar ruidos no deseados (como interferencia eléctrica en 50-60 Hz),y es útil para extraer características de la señal, como la frecuencia media o la frecuencia mediana en estudios de fatiga muscular.
-# 8 Prueba de hipótesis
+
+# 7 Prueba de hipótesis
 ````python
 def compute_features(signal, fs):
     N = len(signal)
@@ -297,7 +307,8 @@ P-value (Frecuencia Media, bilateral): 0.99433
 P-value (Magnitud Total, bilateral): 0.00000
 No hay suficiente evidencia para afirmar que la frecuencia media es diferente.
 La diferencia en la magnitud total es estadísticamente significativa (p < 0.05).
-# 9
+
+# 8 Analisis de resultados  
 # Conclusiones
 
 
