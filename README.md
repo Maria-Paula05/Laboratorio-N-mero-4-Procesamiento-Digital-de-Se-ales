@@ -304,15 +304,23 @@ else:
     print("No hay suficiente evidencia para afirmar que la magnitud total es diferente.")
 ````
 P-value (Frecuencia Media, bilateral): 0.99433
+
 P-value (Magnitud Total, bilateral): 0.00000
+
 No hay suficiente evidencia para afirmar que la frecuencia media es diferente.
+
 La diferencia en la magnitud total es estadísticamente significativa (p < 0.05).
 
 # 8 Analisis de resultados  
+
+
 # Conclusiones
 
 
 # Referencias
+
 Electromiografía y estudios de conducción nerviosa. (n.d.). Medlineplus.gov. Retrieved March 26, 2025, from https://medlineplus.gov/spanish/pruebas-de-laboratorio/electromiografia-y-estudios-de-conduccion-nerviosa/
+
+Influencia en la fatiga muscular en la señal de músculos estimulados eléctricamente. Org.Co. Retrieved March 29, 2025, from http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S1794-12372007000100010
 
 Entender la ventana de Hanning: una guía práctica para principiantes. (n.d.). Wray Castle. Retrieved March 26, 2025, from https://wraycastle.com/es/blogs/knowledge-base/hanning-window?srsltid=AfmBOoorDAgr8KgZZHGfSGRgx7zQtEtQnPjF
