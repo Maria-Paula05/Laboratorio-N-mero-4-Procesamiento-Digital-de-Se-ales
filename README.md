@@ -111,8 +111,11 @@ Frecuencia de muestreo estimada: 124.60 Hz
 # 4.Filtrado de la señal
 A continuación, algunos calculos realizados para obtener filtros como se requieren:
 Frecuencia de Nyquist:
+
 ![image](https://github.com/user-attachments/assets/cee2e0ab-9972-4ecb-8d36-f4cfc03aec98)
+
 Frecuencias de corte normalizadas por Nyquist:
+
 ![image](https://github.com/user-attachments/assets/72ea20a0-a297-4674-a220-280e4382df26)
 
 ```python
