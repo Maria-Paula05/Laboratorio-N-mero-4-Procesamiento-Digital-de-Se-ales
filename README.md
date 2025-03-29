@@ -14,15 +14,58 @@ El músculo escogido para la práctica fue el extensor de los dedos,los tres ele
 En el presente laboratorio se utilizó un módulo DAQ el cual se encarga de :La adquisición de datos y es el proceso de medir un fenómeno eléctrico o físico como voltaje, corriente, temperatura, presión o sonido. Un sistema DAQ consiste de sensores, hardware de medidas DAQ y una PC con software programable.
 # 3.Adquisición de la señal EMG
 Para que este sistema de adquisición de datos(DAQ) funcionará se instaló una librería propia de DAQ en Matlab para captar la señal en tiempo real.
+```python
+% ======= CONFIGURACIÓN =======
+device = 'Dev1';     % Nombre del DAQ
+channel = 'ai0';     % Canal de entrada 
+sampleRate = 1000;   % Frecuencia de muestreo (Hz)
+duration = 60*4;       % Duración total (segundos)
+outputFile = 'emg_signal.csv';  % Nombre del archivo a guardar
 
+% ======= CREAR SESIÓN =======
+d = daq("ni");  % Crear sesión para DAQ NI
+addinput(d, device, channel, "Voltage");  % Agregar canal de entrada
+d.Rate = sampleRate;
 
-Librerias utilizadas
+% ======= VARIABLES =======
+timeVec = [];  % Vector de tiempo
+signalVec = [];  % Vector de señal
+
+% ======= CONFIGURAR GRÁFICA =======
+figure('Name', 'Señal en Tiempo Real', 'NumberTitle', 'off');
+h = plot(NaN, NaN);
+xlabel('Tiempo (s)');
+ylabel('Voltaje (V)');
+title('Señal EMG en Tiempo Real');
+xlim([0, duration]);
+ylim([-0.5, 3]);  % Ajusta el rango de voltaje si es necesario
+grid on;
+
+% ======= ADQUISICIÓN Y GUARDADO =======
+disp('Iniciando adquisición...');
+startTime = datetime('now');
+
+while seconds(datetime('now') - startTime) < duration
+    % Leer una muestra
+    [data, timestamp] = read(d, "OutputFormat", "Matrix");
+    
+    % Guardar datos en vectores
+    t = seconds(datetime('now') - startTime);
+    timeVec = [timeVec; t];
+    signalVec = [signalVec; data];
+    
+    % Actualizar gráfica
+    set(h, 'XData', timeVec, 'YData', signalVec);
+    drawn
+```
+Y en cuanto a graficar la señal se utilizaron las siguientes librerias:
 ```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import butter, filtfilt
 ```
+Para graficar la señal de EMG tomada se usó el siguiente código:
 ```python
 # Cargar la señal EMG desde un archivo CSV
 file_path = "emg_signal.csv"  # Asegúrate de que el archivo esté en el mismo directorio
@@ -56,7 +99,7 @@ Se observa una señal con bastante variabilidad.
 Parece haber interferencias de alta frecuencia (picos muy rápidos).
 La amplitud disminuye con el tiempo, lo cual podría indicar fatiga muscular.
 
--Según el artículo "Extracción de 400ms de la señal EMG", publicado en ResearchGate, las señales EMG presentan una amplitud de naturaleza aleatoria que varía en el rango de [0-10] mV, con una energía útil en el rango de frecuencias de 20 a 500 Hz. De acuerdo con este artículo se definieron las frecuencias de corte de los filtros pasa altas y pasa bajas aplicados a continuación.
+
 # 5.Filtrado de la señal
 ```python
 # Función para diseñar y aplicar un filtro Butterworth
@@ -96,34 +139,66 @@ La frecuencia de corte ( 20 Hz):Cualquier frecuencia por debajo de 20 Hz será a
 Este filtro elimina las frecuencias altas, dejando pasar solo las bajas. En EMG, ayuda a eliminar el ruido electromagnético y la interferencia de alta frecuencia (como es el ruido de 50-60 Hz de la corriente eléctrica).
 
 -La frecuencia de corte ( 60 Hz):El filtro deja pasar frecuencias entre 0 Hz y aproximadamente 60 Hz, con una ligera atenuación cerca del punto de corte.
+
+-Según el artículo "Extracción de 400ms de la señal EMG", publicado en ResearchGate, las señales EMG presentan una amplitud de naturaleza aleatoria que varía en el rango de [0-10] mV, con una energía útil en el rango de frecuencias de 20 a 500 Hz. De acuerdo con este artículo se definieron las frecuencias de corte de los filtros pasa altas y pasa bajas aplicados a continuación.
+
 # 6.Aventanamiento
 
 La ventana de Hanning es una función matemática utilizada principalmente en el procesamiento de señales para suavizar los bordes de una señal,es un tipo de función de ventana que aplica una superposición ponderada a un segmento de datos, lo que ayuda a minimizar las discontinuidades abruptas en sus límites. Este efecto de suavizado es crucial en el análisis de señales, ya que reduce la fuga espectral (artefactos no deseados que pueden distorsionar el análisis).
-En este caso se grafican hasta 5 ventanas para visualizar cómo se segmenta la señal y cada curva representa un fragmento de la señal original pero suavizada por la ventana de Hamming.
+En este caso se grafican tres ventanas: de la primera contracción , la del medio y la última contracción muscular.
+
 ```python
 # Definir tamaño de ventana en segundos
-window_size = 1  # 1 segundo por ventana
-samples_per_window = int(window_size * fs_mean)  # Convertir a muestras
+window_size1 = 2.5  # Reducida para captar frecuencias más altas
+window_size2 = 2.2  # Mantiene el tamaño original
+window_size3 = 2.2  # Aumentada para captar frecuencias más bajas
 
-# Aplicar aventanamiento
-num_windows = len(filtered_signal) // samples_per_window
-windows = [filtered_signal[i * samples_per_window:(i + 1) * samples_per_window] for i in range(num_windows)]
+samples_per_window1 = int(window_size1 * fs_mean)  # Convertir a muestras
+samples_per_window2 = int(window_size2 * fs_mean)
+samples_per_window3 = int(window_size3 * fs_mean)
 
-# Aplicar ventana de Hamming
-windowed_signals = [w * np.hamming(len(w)) for w in windows]
+# Extraer las ventanas
+first_window = filtered_signal[:samples_per_window1]
+middle_window = filtered_signal[len(filtered_signal)//2 : len(filtered_signal)//2 + samples_per_window2]
+last_window = filtered_signal[-samples_per_window3:]
 
-# Graficar algunas ventanas
-plt.figure(figsize=(10, 4))
-for i in range(min(5, len(windowed_signals))):
-    plt.plot(windowed_signals[i], label=f'Ventana {i+1}')
-plt.xlabel("Muestras")
-plt.ylabel("Voltaje (V)")
-plt.title("Señales EMG con ventana de Hamming")
-plt.legend()
-plt.grid(True)
+# Aplicar ventana de Hamming a cada segmento
+first_window_hamming = first_window * np.hamming(len(first_window))
+middle_window_hamming = middle_window * np.hamming(len(middle_window))
+last_window_hamming = last_window * np.hamming(len(last_window))
+
+# Graficar solo las señales con Hamming
+fig, axes = plt.subplots(3, 1, figsize=(10, 8))
+
+# Primera ventana con Hamming
+axes[0].plot(first_window_hamming, color='r', label="Primera Ventana")
+axes[0].plot(np.hamming(len(first_window_hamming)) * max(first_window_hamming), '--', color='black', alpha=0.6, label="Hamming")
+axes[0].set_title("Primera Ventana")
+axes[0].set_xlabel("Muestras")
+axes[0].set_ylabel("Voltaje (V)")
+axes[0].legend()
+
+# Ventana del medio con Hamming
+axes[1].plot(middle_window_hamming, color='g', label="Ventana del Medio")
+axes[1].plot(np.hamming(len(middle_window_hamming)) * max(middle_window_hamming), '--', color='black', alpha=0.6, label="Hamming")
+axes[1].set_title("Ventana del Medio")
+axes[1].set_xlabel("Muestras")
+axes[1].set_ylabel("Voltaje (V)")
+axes[1].legend()
+
+# Última ventana con Hamming (Ajustada con 15 muestras más)
+axes[2].plot(last_window_hamming, color='b', label="Última Ventana")
+axes[2].plot(np.hamming(len(last_window_hamming)) * max(last_window_hamming), '--', color='black', alpha=0.6, label="Hamming")
+axes[2].set_title("Última Ventana")
+axes[2].set_xlabel("Muestras")
+axes[2].set_ylabel("Voltaje (V)")
+axes[2].legend()
+
+plt.tight_layout()
 plt.show()
 ```
-![image](https://github.com/user-attachments/assets/a1685bef-0dad-4ad2-bf1c-a76048c179ad)
+![image](https://github.com/user-attachments/assets/59e156d9-2264-4653-829d-1678936114a9)
+
 Los beneficios de usar aventamiento en este caso son: 
 
 Mejor análisis en el dominio de la frecuencia (reduce el ruido espectral).
@@ -133,69 +208,99 @@ Evita bordes bruscos que podrían introducir artefactos en la señal.
 
 En este fragmento de código  se aplica la Transformada Rápida de Fourier (FFT) a las ventanas de la señal EMG y grafica su espectro de frecuencia. 
 ```python
-# Aplicar Transformada de Fourier (FFT) a cada ventana
-fft_results = [np.fft.fft(w) for w in windowed_signals]
-frequencies = np.fft.fftfreq(samples_per_window, d=1/fs_mean)
+# Función para calcular la FFT
+def compute_fft(signal, fs):
+    N = len(signal)  # Número de muestras
+    fft_values = np.abs(fft(signal))[:N // 2]  # Magnitud de la FFT (mitad del espectro)
+    freqs = np.linspace(0, fs / 2, N // 2)  # Escala de frecuencias
+    return freqs, fft_values
 
-# Tomar solo la mitad del espectro (parte positiva)
-half_spectrum = samples_per_window // 2
-frequencies = frequencies[:half_spectrum]
-fft_magnitudes = [np.abs(fft[:half_spectrum]) for fft in fft_results]
+# Calcular la FFT de cada ventana
+freqs_first, fft_first = compute_fft(first_window_hamming, fs_mean)
+freqs_middle, fft_middle = compute_fft(middle_window_hamming, fs_mean)
+freqs_last, fft_last = compute_fft(last_window_hamming, fs_mean)
 
-# Graficar el espectro de frecuencia de algunas ventanas
-plt.figure(figsize=(10, 4))
-for i in range(min(5, len(fft_magnitudes))):
-    plt.plot(frequencies, fft_magnitudes[i], label=f'Ventana {i+1}')
+# Calcular la frecuencia media de cada ventana
+freq_mean_first = np.sum(freqs_first * fft_first) / np.sum(fft_first)
+freq_mean_middle = np.sum(freqs_middle * fft_middle) / np.sum(fft_middle)
+freq_mean_last = np.sum(freqs_last * fft_last) / np.sum(fft_last)
+
+# Calcular la magnitud total de cada ventana
+magnitude_first = np.sum(fft_first)
+magnitude_middle = np.sum(fft_middle)
+magnitude_last = np.sum(fft_last)
+
+# Imprimir resultados
+print(f"Primera Ventana: Frecuencia Media: {freq_mean_first:.2f} Hz, Magnitud Total: {magnitude_first:.2f}")
+print(f"Ventana del Medio: Frecuencia Media: {freq_mean_middle:.2f} Hz, Magnitud Total: {magnitude_middle:.2f}")
+print(f"Última Ventana: Frecuencia Media: {freq_mean_last:.2f} Hz, Magnitud Total: {magnitude_last:.2f}")
+
+# Graficar espectros de frecuencia en un solo gráfico (sin incluir datos en la leyenda)
+plt.figure(figsize=(12, 5))
+plt.plot(freqs_first, fft_first, color='r', label="Primera Ventana")
+plt.plot(freqs_middle, fft_middle, color='g', label="Ventana del Medio")
+plt.plot(freqs_last, fft_last, color='b', label="Última Ventana")
+plt.title("Espectros de Frecuencia de las Ventanas")
 plt.xlabel("Frecuencia (Hz)")
 plt.ylabel("Magnitud")
-plt.title("Espectro de Frecuencia de la Señal EMG")
 plt.legend()
 plt.grid(True)
 plt.show()
 ```
-![image](https://github.com/user-attachments/assets/dff544d8-b993-46be-af1a-0737d43af0b1)
+![image](https://github.com/user-attachments/assets/50427bae-f726-40f3-8b99-6cafd61fa853)
+Primera Ventana: Frecuencia Media: 38.70 Hz, Magnitud Total: 523.64
+Ventana del Medio: Frecuencia Media: 39.45 Hz, Magnitud Total: 471.80
+Última Ventana: Frecuencia Media: 40.38 Hz, Magnitud Total: 142.05
 La FFT permite analizar la distribución de energía en diferentes frecuencias,ayuda a identificar ruidos no deseados (como interferencia eléctrica en 50-60 Hz),y es útil para extraer características de la señal, como la frecuencia media o la frecuencia mediana en estudios de fatiga muscular.
-# 8.Frecuencia media y mediana de cada ventana 
-```python
-# Calcular frecuencia media y mediana para cada ventana
-freq_mean_values = []
-freq_median_values = []
+# 8 Prueba de hipótesis
+````python
+def compute_features(signal, fs):
+    N = len(signal)
+    fft_values = np.abs(np.fft.fft(signal))[:N // 2]  # Magnitud de la FFT
+    freqs = np.linspace(0, fs / 2, N // 2)  # Frecuencias correspondientes
 
-for i in range(len(fft_magnitudes)):
-    magnitudes = fft_magnitudes[i]
-    
-    # Frecuencia media
-    f_mean = np.sum(frequencies * magnitudes) / np.sum(magnitudes)
-    freq_mean_values.append(f_mean)
+    freq_mean = np.sum(freqs * fft_values) / np.sum(fft_values)  # Frecuencia media
+    magnitude_total = np.sum(fft_values)  # Magnitud total
 
-    # Frecuencia mediana
-    cumulative_energy = np.cumsum(magnitudes)  # Suma acumulada
-    total_energy = cumulative_energy[-1]  # Energía total
-    f_median = frequencies[np.where(cumulative_energy >= total_energy / 2)[0][0]]
-    freq_median_values.append(f_median)
+    return freq_mean, magnitude_total
 
-# Mostrar resultados
-for i in range(min(5, len(freq_mean_values))):
-    print(f"Ventana {i+1}: Frecuencia Media = {freq_mean_values[i]:.2f} Hz, Frecuencia Mediana = {freq_median_values[i]:.2f} Hz")
-```
--Ventana 1: Frecuencia Media = 39.63 Hz, Frecuencia Mediana = 39.19 Hz
+# Calcular características para la primera y última ventana
+freq_mean_first, magnitude_first = compute_features(first_window_hamming, fs_mean)
+freq_mean_last, magnitude_last = compute_features(last_window_hamming, fs_mean)
 
--Ventana 2: Frecuencia Media = 37.75 Hz, Frecuencia Mediana = 36.18 Hz
+# Prueba t bilateral para frecuencia media
+t_freq, p_value_freq = stats.ttest_ind(first_window_hamming, last_window_hamming, equal_var=False)
 
--Ventana 3: Frecuencia Media = 40.72 Hz, Frecuencia Mediana = 42.20 Hz
+# Prueba t bilateral para magnitud total
+t_mag, p_value_mag = stats.ttest_ind(np.abs(np.fft.fft(first_window_hamming)),
+                                     np.abs(np.fft.fft(last_window_hamming)),
+                                     equal_var=False)
 
--Ventana 4: Frecuencia Media = 37.82 Hz, Frecuencia Mediana = 37.18 Hz
+# Imprimir resultados
+print(f"P-value (Frecuencia Media, bilateral): {p_value_freq:.5f}")
+print(f"P-value (Magnitud Total, bilateral): {p_value_mag:.5f}")
 
--Ventana 5: Frecuencia Media = 41.24 Hz, Frecuencia Mediana = 44.21 Hz
+# Interpretación de los resultados
+alpha = 0.05
 
-En el estudio de EMG estos calculos estadísticos son usados para:
+if p_value_freq < alpha:
+    print("La diferencia en la frecuencia media es estadísticamente significativa (p < 0.05).")
+else:
+    print("No hay suficiente evidencia para afirmar que la frecuencia media es diferente.")
 
-Frecuencia Media: Se usa para analizar la fatiga muscular. Si disminuye con el tiempo, indica fatiga.
-
-Frecuencia Mediana: También se usa en fatiga y en la caracterización de diferentes tipos de actividad muscular.
-
+if p_value_mag < alpha:
+    print("La diferencia en la magnitud total es estadísticamente significativa (p < 0.05).")
+else:
+    print("No hay suficiente evidencia para afirmar que la magnitud total es diferente.")
+````
+P-value (Frecuencia Media, bilateral): 0.99433
+P-value (Magnitud Total, bilateral): 0.00000
+No hay suficiente evidencia para afirmar que la frecuencia media es diferente.
+La diferencia en la magnitud total es estadísticamente significativa (p < 0.05).
 # 9
 # Conclusiones
+
+
 # Referencias
 Electromiografía y estudios de conducción nerviosa. (n.d.). Medlineplus.gov. Retrieved March 26, 2025, from https://medlineplus.gov/spanish/pruebas-de-laboratorio/electromiografia-y-estudios-de-conduccion-nerviosa/
 
